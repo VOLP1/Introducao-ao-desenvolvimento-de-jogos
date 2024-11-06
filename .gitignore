@@ -1,0 +1,11 @@
+# Arquivos compilados
+*.o
+*.exe
+build/
+
+# Arquivos do VSCode
+.vscode/
+
+# Arquivos do sistema
+.DS_Store
+Thumbs.db
