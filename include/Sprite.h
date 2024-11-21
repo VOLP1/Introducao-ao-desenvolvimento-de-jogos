@@ -7,22 +7,34 @@
 #include <string>
 
 class Sprite {
-private:
-    SDL_Texture* texture;
-    int width;
-    int height;
-    SDL_Rect clipRect;
-
 public:
     Sprite();
-    Sprite(std::string file);
+    Sprite(std::string file, int frameCountW = 1, int frameCountH = 1);
     ~Sprite();
+    Sprite& operator=(const Sprite& other);
+    
     void Open(std::string file);
     void SetClip(int x, int y, int w, int h);
     void Render(int x, int y);
-    int GetWidth();
-    int GetHeight();
-    bool IsOpen();
+    int GetWidth();     // Removido o corpo da função
+    int GetHeight();    // Removido o corpo da função
+    bool IsOpen();      // Removido o corpo da função
+    void SetFrame(int frame);
+    void SetFrameCount(int frameCountW, int frameCountH);
+    void SetFrameTime(float frameTime);
+    void Update(float dt);
+
+private:
+    SDL_Texture* texture;
+    std::string texturePath;
+    int width;
+    int height;
+    SDL_Rect clipRect;
+    int frameCount;
+    float frameTime;
+    int currentFrame;
+    int frameCountW;
+    int frameCountH;
 };
 
 #endif

@@ -1,22 +1,29 @@
 #ifndef STATE_H
 #define STATE_H
 
-#include "Sprite.h"
+#define INCLUDE_SDL
+#include "SDL_include.h"
+#include "GameObject.h"
 #include "Music.h"
+#include <vector>
+#include <memory>
 
 class State {
 private:
-    Sprite* bg;
-    Music* music;
     bool quitRequested;
+    std::vector<std::unique_ptr<GameObject>> objectArray;
+    void Input();
+    Music* music;  // Adicionado o ponteiro para Music
 
 public:
     State();
     ~State();
-    bool QuitRequested();
+    
     void LoadAssets();
     void Update(float dt);
     void Render();
+    bool QuitRequested();
+    void AddObject(GameObject* object);
 };
 
 #endif
