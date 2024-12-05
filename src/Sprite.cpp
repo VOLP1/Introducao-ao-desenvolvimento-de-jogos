@@ -2,6 +2,7 @@
 #include "../include/Game.h"
 #include <stdexcept>
 #include <iostream>
+#include <Resources.h>
 
 Sprite::Sprite() : 
     texture(nullptr),
@@ -71,7 +72,7 @@ void Sprite::Open(std::string file) {
         texture = nullptr;
     }
 
-    texture = IMG_LoadTexture(Game::GetInstance().GetRenderer(), file.c_str());
+    texture = Resources::GetImage(file);
     if(texture == nullptr) {
         std::cout << "Failed to load texture! SDL Error: " << SDL_GetError() << std::endl;
         throw std::runtime_error("Could not load texture: " + std::string(SDL_GetError()));

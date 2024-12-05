@@ -4,10 +4,14 @@
 #include "../include/SpriteRenderer.h"
 #include "../include/Animator.h"
 #include "../include/Animation.h"
+#include "../include/Sound.h"
+
 #include <iostream>
 
 Zombie::Zombie(GameObject& associated) : Component(associated), hitpoints(100) {
     std::cout << "Creating Zombie..." << std::endl;
+    deathSound = new Sound();
+    deathSound->Open("recursos/audio/Dead.wav");
     
     // Criar e configurar o SpriteRenderer
     SpriteRenderer* renderer = new SpriteRenderer(associated, "recursos/img/Enemy.png", 3, 2);
@@ -24,6 +28,7 @@ Zombie::Zombie(GameObject& associated) : Component(associated), hitpoints(100) {
 }
 
 Zombie::~Zombie() {
+    delete deathSound;
 }
 
 void Zombie::Damage(int damage) {
@@ -32,7 +37,7 @@ void Zombie::Damage(int damage) {
         hitpoints -= damage;
         
         if(hitpoints <= 0) {
-            hitpoints = 0;  // Garante que não fique negativo
+            hitpoints = 0;  
             auto* anim = (Animator*)associated.GetComponent("Animator");
             if(anim) {
                 anim->SetAnimation("dead");
@@ -43,9 +48,14 @@ void Zombie::Damage(int damage) {
 }
 
 void Zombie::Update(float dt) {
-    // Só perde vida se ainda estiver vivo
     if (hitpoints > 0) {
-        Damage(1);
+        static int frameCount = 0;
+        frameCount++;
+        if (frameCount >= 30){
+            Damage(1);
+            frameCount = 0;
+            std::cout << "Zombie HP: " << hitpoints << std::endl;
+        }
     }
 }
 

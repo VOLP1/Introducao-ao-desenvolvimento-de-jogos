@@ -1,3 +1,14 @@
+# Use RMDIR ao invés de rm no Windows
+ifeq ($(OS),Windows_NT)
+    RM = del /Q /F
+    RMDIR = rmdir /Q /S
+    MKDIR = mkdir
+else
+    RM = rm -f
+    RMDIR = rm -rf
+    MKDIR = mkdir -p
+endif
+
 # Compiler
 CXX = g++
 
@@ -28,7 +39,7 @@ TARGET = game.exe
 all: $(BUILDDIR) $(TARGET)
 
 $(BUILDDIR):
-	mkdir -p $(BUILDDIR)
+	$(MKDIR) $(BUILDDIR)
 
 $(TARGET): $(OBJECTS)
 	$(CXX) $(OBJECTS) -o $(TARGET) $(SDL_LIB) $(SDL_FLAGS)
@@ -37,7 +48,7 @@ $(BUILDDIR)/%.o: $(SRCDIR)/%.cpp
 	$(CXX) $(CXXFLAGS) $(INCLUDES) -c $< -o $@
 
 clean:
-	rm -rf $(BUILDDIR)
-	rm -f $(TARGET)
+	@if exist $(BUILDDIR) $(RMDIR) $(BUILDDIR)
+	@if exist $(TARGET) $(RM) $(TARGET)
 
 .PHONY: all clean

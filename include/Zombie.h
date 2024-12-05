@@ -3,14 +3,20 @@
 
 #include "Component.h"
 #include "GameObject.h"
+#include "Sound.h"
+#include "Sprite.h"
+#include "SpriteRenderer.h"
+#include "Animator.h"
+#include <string>
 
 class Zombie : public Component {
 private:
     int hitpoints;
+    Sound* deathSound;  // Mudado para ponteiro
 
 public:
     Zombie(GameObject& associated);
-    virtual ~Zombie();  // Adicionado destrutor virtual
+    ~Zombie();  // Adicionado destrutor
     
     void Update(float dt) override;
     void Render() override;

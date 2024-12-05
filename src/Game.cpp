@@ -3,6 +3,8 @@
 #include "SDL_image.h"
 #include "SDL_mixer.h"
 #include <stdexcept>
+#include <Resources.h>
+#include <iostream>
 
 Game* Game::instance = nullptr;
 
@@ -92,10 +94,14 @@ SDL_Renderer* Game::GetRenderer() {
 }
 
 void Game::Run() {
-    while (!state->QuitRequested()) {
+    while(!state->QuitRequested()) {
         state->Update(0);
         state->Render();
         SDL_RenderPresent(renderer);
-        SDL_Delay(33); 
+        SDL_Delay(33);
     }
+    
+    Resources::ClearImages();
+    Resources::ClearMusics();
+    Resources::ClearSounds();
 }

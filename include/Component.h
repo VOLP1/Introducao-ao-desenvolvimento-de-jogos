@@ -3,6 +3,7 @@
 
 #include <string>
 
+// Forward declaration
 class GameObject;
 
 class Component {
@@ -11,7 +12,7 @@ protected:
     
 public:
     Component(GameObject& associated);
-    virtual ~Component();  // Garantir que é virtual
+    virtual ~Component();
     
     virtual void Update(float dt) = 0;
     virtual void Render() = 0;

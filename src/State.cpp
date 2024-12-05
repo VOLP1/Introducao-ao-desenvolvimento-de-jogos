@@ -4,7 +4,9 @@
 #include "Component.h"
 #include "SpriteRenderer.h"
 #include "Music.h"
-#include "Zombie.h"  
+#include "Zombie.h"
+#include "TileMap.h"
+#include "TileSet.h"
 #include <iostream>
 
 State::State() : quitRequested(false) {
@@ -16,35 +18,33 @@ State::~State() {
 }
 
 void State::LoadAssets() {
-    std::cout << "Loading assets..." << std::endl;
+    std::cout << "Loading State assets..." << std::endl;
     
-    // Criar o GameObject do background
-    GameObject* bg = new GameObject();
-    
-    // Adicionar o componente SpriteRenderer com a imagem de fundo
-    SpriteRenderer* renderer = new SpriteRenderer(*bg, "recursos/img/Background.png");
-    bg->AddComponent(renderer);
-    
-    // Definir a posição inicial (0,0 neste caso)
-    bg->box.x = 0;
-    bg->box.y = 0;
-    
-    // Adicionar o GameObject ao State
-    AddObject(bg);
+    // Cria o tilemap
+    GameObject* tileMapObj = new GameObject();
+    std::cout << "Creating TileSet..." << std::endl;
+    TileSet* tileSet = new TileSet(64, 64, "recursos/img/Tileset.png");  // Note o T maiúsculo
+    std::cout << "Creating TileMap..." << std::endl;
+    TileMap* tileMap = new TileMap(*tileMapObj, "recursos/map/map.txt", tileSet);
+    tileMapObj->AddComponent(tileMap);
+    tileMapObj->box.x = 0;
+    tileMapObj->box.y = 0;
+    AddObject(tileMapObj);
+    std::cout << "TileMap added to State" << std::endl;
 
-
+    // Cria o Zombie
     GameObject* zombie = new GameObject();
     zombie->box.x = 600;
     zombie->box.y = 450;
     Zombie* zombieComponent = new Zombie(*zombie);
     zombie->AddComponent(zombieComponent);
     AddObject(zombie);
-    
 
     // Carrega e toca a música
     music = new Music();
     music->Open("recursos/audio/BGM.wav");
     music->Play();
+    std::cout << "Music started" << std::endl;
 }
 
 void State::Update(float dt) {
